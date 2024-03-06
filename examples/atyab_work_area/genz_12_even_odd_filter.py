@@ -1,18 +1,14 @@
-def filter_even_numbers(list_of_num):
-  result_list = []
-  for curr_num in list_of_num:
-    if curr_num % 2 == 0:
-      result_list.append(curr_num)
-  return result_list
+def filter_even_odd_numbers(list_of_nums):
+  even_numbers = []
+  odd_numbers = []
 
-def filter_odd_numbers(list_of_num):
-  result_list = []
-  for curr_num in list_of_num:
-    if curr_num % 2 == 1:
-      result_list.append(curr_num)
-  return result_list
+  for curr_num in list_of_all_nums:
+    if curr_num % 2 == 0:
+      even_numbers.append(curr_num)
+    else:
+      odd_numbers.append(curr_num)
+  
+  return f"Even numbers are {even_numbers} and Odd numbers are {odd_numbers}"
 
 list_of_all_nums = [1, 2, 3, 4, 5, 6, 7, 8]
-
-print(filter_even_numbers(list_of_all_nums))
-print(filter_odd_numbers(list_of_all_nums))
+print(filter_even_odd_numbers(list_of_all_nums))

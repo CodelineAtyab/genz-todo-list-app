@@ -8,7 +8,7 @@ list_numbers=[-2,0,3,2,-4,9]
 def largest_num(list_numbers):
     largest=list_numbers[0]
     for i in list_numbers:
-        if i> largest:
+        if i > largest:
             largest=i
     return largest
 

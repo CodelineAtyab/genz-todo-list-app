@@ -12,4 +12,3 @@ food_list = ['burger','pie','burger','burger','orange','pie']
 frequency = element_frequency(food_list)
 print(frequency)
 
-{"burger": 1, "pie": 1}

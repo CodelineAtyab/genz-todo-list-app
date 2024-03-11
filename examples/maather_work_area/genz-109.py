@@ -13,5 +13,3 @@ def palindrome_structure(n):
         num = (10**i) + temp 
         temp = num
         print(f"{' ' * (n - i)}{num*num}")
-
-palindrome_structure(7)

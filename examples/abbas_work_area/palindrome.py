@@ -1,15 +1,15 @@
-user = input("Enter: ").strip().replace(" ", "").lower()
-punc = []
+user_input = input("Enter: ").strip().replace(" ", "").lower()
+punctuation = []
 
-for curr in user:
+for curr in user_input:
     if curr not in [",", "-", "."]:
-        punc.append(curr)
+        punctuation.append(curr)
 
-remove = "".join(punc)
+remove = "".join(punctuation)
 
-punc1 = punc[::-1]
+inverse = punctuation[::-1]
 
-if punc == punc1:
+if punctuation == inverse:
     print("True")
 else:
     print("False")

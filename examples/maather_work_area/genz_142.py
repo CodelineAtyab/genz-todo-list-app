@@ -5,10 +5,20 @@ Input string = "((()))"
 Output = True
 '''
 def parentheses_validation(str):
-    dict = {}
-    dict['open'] = str.count('(')
-    dict['close'] = str.count(')')
+    stack = [] 
+    pairs = {
+        '(': ')',
+        '{': '}',
+        '[': ']'
+    }
+    for bracket in str:
+        if bracket in pairs:
+            stack.append(bracket)
+        elif len(stack) == 0 or bracket != pairs[stack.pop()]:
+            return False
 
-    if dict['open'] == dict['close']:
-        return True
-    return False
+    return True
+
+
+print(parentheses_validation("(({}))"))
+print(parentheses_validation("({}])"))

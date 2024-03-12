@@ -44,13 +44,6 @@ class Queue:
             return "Error: Queue is empty"
         return self.items[0]
 
-q = Queue()
-q.enqueue(1)
-q.enqueue(4)
-q.enqueue(8)
-q.dequeue()
-q.front()
-print(q.front())
 
 
 

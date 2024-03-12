@@ -18,7 +18,7 @@ def pantheses_validation(input_list):
             return False
     return True if len(parantheses_stack)==0 else False
 
-print(pantheses_validation("[}()"))
+print(pantheses_validation("((()()))"))
 
 
 

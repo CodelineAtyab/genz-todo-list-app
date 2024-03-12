@@ -3,3 +3,6 @@ def multiplication_table():
     for num in range(numbers):
         print(numbers, "x", num, " = ", numbers*num)
 multiplication_table()
+
+
+

@@ -1,8 +1,8 @@
-a = input("Enter a string to check if palindrome: ")
-a1="".join(a.split())
-a2=a1[::-1]
+string_input = input("Enter a string to check if palindrome: ")
+string1 = "".join(string_input.split()) #removing white spaces in the input string
+string2 = string1[::-1]
 
-if a2.lower()==a1.lower():
+if string2.lower()==string1.lower(): 
     print("True")
 else:
     print("False") 

@@ -5,11 +5,9 @@ the second largest element in that list
 '''
 
 
-def second_largest():
-    user_input = input("Enter your desired list of numbers with a space between them: ")
-    nums_list = [int(x) for x in user_input.split()]
+def second_largest(nums_list):
     largest_number = nums_list[0]
-    second_largest_number = -9999999
+    second_largest_number = float("-inf")
 
     for number in nums_list:
         if number > largest_number:
@@ -20,5 +18,8 @@ def second_largest():
     return(second_largest_number)
 
 
-print(second_largest())
+
+user_input = input("Enter your desired list of numbers with a space between them: ")
+nums_list = [int(x) for x in user_input.split()]
+print(second_largest(nums_list))
 

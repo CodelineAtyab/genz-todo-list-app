@@ -1,7 +1,7 @@
 input = [5, 1, 9, 7, 2, 8, 5, 11, 14, 33, 38, 6]
 
-largest = -999999
-second_largest = -999999
+largest = float("-inf")
+second_largest = float("-inf")
 
 for i in input:
     if i > largest:

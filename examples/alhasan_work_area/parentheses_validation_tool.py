@@ -15,8 +15,10 @@ def isValid(parentheses):
         elif pair in pairs_of_parentheses.keys():
             if len(stack) == 0 or stack.pop() != pairs_of_parentheses[pair]:
                 return False
-    return True
+    return len(stack) == 0
 
 
-print(isValid("())"))
+print(isValid("))"))
 print(isValid("(())"))
+print(isValid("()))()"))
+

@@ -1,11 +1,11 @@
 import requests
 
-"""
-This program calculates the distance and time
-required to reach from an origin to a destination
-"""
 
 def distance_and_duration(origin, destination):
+    """
+    This program calculates the distance and time
+    required to reach from an origin to a destination
+    """
     input_params = {
                      "origins": origin,
                      "destinations": destination,

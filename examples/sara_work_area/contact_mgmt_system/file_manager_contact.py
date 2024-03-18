@@ -35,7 +35,7 @@ def search_contact(search_value):
         with open(CONTACTS_FILE_PATH, "r") as contact_file:
             for line in contact_file:
                 contact_info = line.strip().split(",")
-                if contact_info[0] == search_value or contact_info[1] == search_value or contact_info[2] == search_value:
+                if contact_info[0].lower() == search_value.lower() or contact_info[1] == search_value or contact_info[2] == search_value:
                     return f"\nContact name: {contact_info[0]}\nContact phone number: {contact_info[1]}\nContact email: {contact_info[2]}\nContact address: {contact_info[3]}\n"
         return f"\nSorry, no contact found.\n"
     except FileNotFoundError:
@@ -52,7 +52,7 @@ def delete_contact(phone):
             contact_file.seek(0)
             for line in lines:
                 contact_info = line.strip().split(",")
-                if contact_info[1] == phone:
+                if contact_info[1] == str(phone):
                     name, _, email, address = contact_info
                     print(f"\nContact deleted successfully\n")
                     contact_deleted = True
@@ -73,19 +73,20 @@ def update_contact(input_value):
         contact_updated = False
         with open(CONTACTS_FILE_PATH, "r+") as contact_file:
             lines = contact_file.readlines()
+            if input_value == 1:
+                current_value = input("Please enter the current name: ")
+            elif input_value == 2:
+                current_value = input("Please enter the current phone number: ")
+            elif input_value == 3:
+                current_value = input("Please enter the current email address: ")
+            elif input_value == 4:
+                current_value = input("Please enter the current address: ")
+            else:
+                print("Invalid input value.")
+                return
+
             for index, line in enumerate(lines):
                 contact_info = line.strip().split(",")
-                if input_value == 1:
-                    current_value = input("Please enter the current name: ")
-                elif input_value == 2:
-                    current_value = input("Please enter the current phone number: ")
-                elif input_value == 3:
-                    current_value = input("Please enter the current email address: ")
-                elif input_value == 4:
-                    current_value = input("Please enter the current address: ")
-                else:
-                    print("Invalid input value.")
-                    return
 
                 if contact_info[input_value - 1] == current_value:
                     print(f"\nContact name: {contact_info[0]}\nContact phone number: {contact_info[1]}\nContact email: {contact_info[2]}\nContact address: {contact_info[3]}\n")
@@ -99,7 +100,7 @@ def update_contact(input_value):
                 contact_file.seek(0)
                 contact_file.writelines(lines)
                 contact_file.truncate()
-                print("Contact updated successfully.")
+                print("\nContact updated successfully.\n")
             else:
                 print("Contact not found.")
     except FileNotFoundError:

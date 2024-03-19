@@ -4,7 +4,7 @@ def travel_time_estimator(origin, destination):
     params = {
         "destinations": destination,
         "origins": origin,
-        "key": "AIzaSyC0PsPb31j531SYnJYLKzivuibohA20IbU",
+        "key": "YOUR API KEY",
         "units": "metric"
     }
 

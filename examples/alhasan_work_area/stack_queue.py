@@ -1,7 +1,9 @@
 """
+
 An implementation of two classes;
 one class is responsible for doing stack operations (push, pop, peek)
 the other class is responsible for doing queue operations (enqueue, dequeue, front)
+
 """
 
 
@@ -36,13 +38,13 @@ class Queue:
         if self.queue:
             return self.queue.pop(0)
         elif len(self.queue) == 0:
-            return "Cannot perform the operation, the stack is empty"
+            return "Cannot perform the operation, the queue is empty"
 
     def front(self):
         if self.queue:
             return self.queue[0]
         elif len(self.queue) == 0:
-            return "Cannot perform the operation, the stack is empty"
+            return "Cannot perform the operation, the queue is empty"
 
 
 stack1 = Stack()

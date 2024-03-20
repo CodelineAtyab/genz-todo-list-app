@@ -13,7 +13,7 @@ def directory_organizer(directory):
         if file.endswith(".txt"):
             os.makedirs(_DIRECTORY + "text", exist_ok=True)
             os.rename(_DIRECTORY + file, _DIRECTORY + "text/" + file )
-        elif file.endswith(".img"):
+        elif file.endswith(".img", ".png", ".jpeg"):
             os.makedirs(_DIRECTORY + "images", exist_ok=True)
             os.rename(_DIRECTORY + file, _DIRECTORY + "images/" + file )
         else:

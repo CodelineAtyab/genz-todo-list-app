@@ -1,4 +1,6 @@
+import shutil
 import os
+
 
 """
 A program to organize files into directories
@@ -34,8 +36,9 @@ try:
             destination_directory = miscellaneous_directory
             no_of_misc_files += 1
 
-        new_file_path = os.path.join(destination_directory, file)
-        os.rename(os.path.join(parent_directory, file), new_file_path)
+        source_path = os.path.join(parent_directory, file)
+        destination_path = os.path.join(destination_directory, file)
+        shutil.move(source_path, destination_path)
     print(f"The number of image files moved is {no_of_img_files}\nThe number of text files moved is {no_of_txt_files}\nThe number of miscellaneous files moved is {no_of_misc_files}")
 
 except FileNotFoundError:

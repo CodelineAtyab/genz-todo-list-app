@@ -3,3 +3,4 @@ class ContactRecord:
         self.phone_number = phone_number
         self.name = name
         self.email = email
+

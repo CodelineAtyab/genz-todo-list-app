@@ -1,0 +1,3 @@
+{"pno": "0096892011497", "name": "Atyab", "addr": "Al-Ansab"}
+{"pno": "0096812345678", "name": "GenZ", "addr": "Omantel HQ, Ghala"}
+{"pno": "0096852341233", "name": "Codeline", "addr": "Technopark, Ghala"}

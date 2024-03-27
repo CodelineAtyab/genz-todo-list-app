@@ -1,4 +1,6 @@
 class ContactRecord:
+    # TODO: Define getters and setters for the following fields
+    # TODO: Change the related code accordingly
     def __init__(self, phone_number, name, email):
         self.__phone_number = phone_number
         self.__name = name

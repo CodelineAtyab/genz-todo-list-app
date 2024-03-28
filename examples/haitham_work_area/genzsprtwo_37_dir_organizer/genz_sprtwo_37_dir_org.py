@@ -2,14 +2,16 @@ import os
 import shutil
 import glob
 
-def organize_files(folder):
-    folders = {
+folders = {
         'jpg': 'Images',
         'jpeg': 'Images',
         'png': 'Images',
         'txt': 'Text',
         'pdf': 'Documents',
     }
+
+
+def organize_files(folder):
 
     moved_files = 0
     folder_created = set()
@@ -40,6 +42,6 @@ def organize_files(folder):
     else:
         print("No new folders were created.")
 
-# Usage example, replace the path with your target directory
-path_to_organize = 'C:/Users/71521/Desktop/newrepo/genz-todo-list-app/examples/haitham_work_area/genzsprtwo_37_dir_organizer/dir'
+
+path_to_organize = '/dir'
 organize_files(path_to_organize)

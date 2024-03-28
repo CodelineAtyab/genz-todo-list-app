@@ -5,7 +5,7 @@ def generate_sha256(file_path):
     sha256 = hashlib.sha256()
 
     with open(file_path, 'rb') as input_file:
-        for blocks in iter(lambda: input_file.read(4096), b""):
+        for blocks in iter(lambda: input_file.read(4096), b""):  # specifies that what is read should be in bytes
             sha256.update(blocks)
     return sha256.hexdigest()
 
@@ -21,8 +21,7 @@ def store_sha256(file_path):
 
 def check_file_integrity(file_path):
     original = ""
-    with open(file_path, 'r') as read_file:
-        original = read_file.read()
+    original = generate_sha256(file_path)
 
     new_file_path = input("Enter file path of new: ")
     new_sha256 = generate_sha256(new_file_path)

@@ -4,38 +4,16 @@ from OOP_contact import ContactBook
 
 def main():
     running = True  # stores the state of the application whether it's running or not
-    contact_book = ContactBook()
-    #file_manager.if_header_exists()  # Calls the header function which creates a header for the csv file
-
-    # Determines users chosen file type
-    print("Select storage format:")
-    print("1. CSV")
-    print("2. TXT")
-    print("3. JSON")
-    try:
-        storage_format_choice = int(input("Enter the number of the desired storage format: "))
-    except ValueError:
-        print("Invalid input, defaulting to CSV format.")
-        storage_format_choice = 1
-
-    if storage_format_choice == 1:
-        storage_format = 'csv'
-    elif storage_format_choice == 2:
-        storage_format = 'txt'
-    elif storage_format_choice == 3:
-        storage_format = 'json'
-    else:
-        print("Invalid choice, default CSV format.")
-        storage_format = 'csv'
-
-    contact_book = ContactBook(storage_format=storage_format)
+    contact_book = ContactBook(storage_format="csv")
+    contact_book.if_header_exists()  # Calls the header function which creates a header for the csv file
 
     while running:
         print("(1) Add contact")
-        print("(2) Delete contact")
+        print("(2) Load in chosen format")
         print("(3) Update Contact")
         print("(4) Search Contact")
-        print("(5) Exit")
+        print("(5) Delete Contact")
+        print("(6) Exit")
 
         try:
             choice = int(input("Enter chosen operation: "))
@@ -43,9 +21,42 @@ def main():
             print("Error, Try again.", ex)
             choice = int(input("Enter chosen operation: "))
 
-        if choice == 1:
+        if choice == 1:  # takes user input and adds a contact record
             add_name, add_contact, add_email, add_address = enter_contact()
             contact_book.store_contact(add_name, add_contact, add_email, add_address)
+
+        elif choice == 2:  # loads data in chosen format
+            print("Select new storage format:")
+            print("1. CSV")
+            print("2. TXT")
+            print("3. JSON")
+            format_choice = input("Enter the number of the desired storage format: ")
+
+            if format_choice == '1':
+                new_format = 'csv'
+            elif format_choice == '2':
+                new_format = 'txt'
+            elif format_choice == '3':
+                new_format = 'json'
+            else:
+                print("Invalid choice, defaulting to CSV format.")
+                new_format = 'csv'
+
+            contact_book.load_and_store_contacts(new_format)
+            running = False
+
+        elif choice == 3:  # Update a record
+            old_info = input("Enter the exact phone number of the field you wish to update: ")
+            add_name, add_contact, add_email, add_address = enter_contact()
+            contact_book.update_contact(old_info, add_name, add_contact, add_email, add_address)
+
+        elif choice == 4:  # search for a contact
+            search = input("Enter search Number: ")
+            print(contact_book.read_contact(search))
+
+        elif choice == 5:  # Delete contact
+            delete = input("input desired item to be deleted by phone number: ")
+            contact_book.delete_contact(delete)
 
 
 def enter_contact():

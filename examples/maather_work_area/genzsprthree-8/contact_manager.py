@@ -1,3 +1,4 @@
+import re
 from contact_record import ContactRecord
 from contact_book import CsvContactBook
 from app_user import AppUser
@@ -47,3 +48,7 @@ class ContactManager:
             print("Contact deleted.")
         else:
             print("Contact not found.")
+
+    def validate_email(email):
+        email_pattern = re.compile(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
+        return bool(email_pattern.match(email))

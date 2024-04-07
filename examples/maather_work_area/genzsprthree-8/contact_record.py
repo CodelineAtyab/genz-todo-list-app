@@ -1,3 +1,4 @@
+from contact_manager import ContactManager
 class ContactRecord:
     def __init__(self, name, phone_number, email, address):
         self.__name = name
@@ -21,7 +22,10 @@ class ContactRecord:
         return self.__email
 
     def set_email(self, value):
-        self.__email = value
+        if ContactManager.validate_email(value):
+            self.__email = value
+        else:
+            raise ValueError("invalid email input")
 
     def get_address(self):
         return self.__address

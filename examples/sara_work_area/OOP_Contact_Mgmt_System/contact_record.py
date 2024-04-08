@@ -1,6 +1,4 @@
-import re
-
-pattern = r"^[^\d][^@]+@[^@]+\.[^@]+"
+from utils import validate_email
 
 
 class ContactRecord:
@@ -37,10 +35,3 @@ class ContactRecord:
 
     def set_address(self, inp_address):
         self.__address = inp_address
-
-
-def validate_email(inp_email):
-    if re.match(pattern, inp_email):
-        return True
-    else:
-        return False

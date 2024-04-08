@@ -1,5 +1,6 @@
 import unittest
-from contact_record import ContactRecord, validate_email
+from contact_record import ContactRecord
+from utils import validate_email
 
 
 class TestValidateEmail(unittest.TestCase):

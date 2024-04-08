@@ -1,5 +1,6 @@
 from csv_contact_book import CsvContactBook
 from json_contact_book import JsonContactBook
+from contact_book import ContactBook
 from CRUD_record import CRUDRecord
 from contact_record import ContactRecord
 from app_user import AppUser
@@ -13,7 +14,53 @@ def main():
     app_running = True
     logged_in = False
     while app_running:
-        if logged_in:
+        if not logged_in:
+            print("1- Login with an existing username")
+            print("2- Sign in as a new user")
+            print("3- Exit program")
+            user_login_input = int(input("Please select one of the options: "))
+            while True:
+                if user_login_input in [1, 2, 3]:
+                    break
+                else:
+                    print("Invalid option")
+                    user_login_input = input("Please select one of the options: ")
+            if user_login_input == 1:
+                user_phone = input("Please enter the phone number: ")
+                user_name = input("Please enter the username: ")
+                with open(APP_USERS_FILE_PATH, "a+") as app_users_file:
+                    app_users_file.seek(0)
+                    lines = app_users_file.readlines()
+                    for index, line in enumerate(lines):
+                        user_info = line.strip().split(",")
+                        if user_info[0] == user_phone and user_info[1] == user_name:
+                            app_user_details = AppUser(user_phone, user_name)
+                            # Create JSON or CSV based on user's requirement
+                            contact_book: ContactBook = None
+                            if requested_format == "csv":
+                                contact_book = CsvContactBook(app_user_details.get_phone_number())
+                            elif requested_format == "json":
+                                contact_book = JsonContactBook(app_user_details.get_phone_number())
+                            contact_book.load_contacts()
+                            contact_book.return_formatted_contacts()
+                            crud_record = CRUDRecord(contact_book)
+                            logged_in = True
+                            break
+                    else:
+                        print("Wrong user credentials. Please try again.")
+
+            if user_login_input == 2:
+                user_phone = input("Please enter the phone number: ")
+                user_name = input("Please enter the username: ")
+                with open(APP_USERS_FILE_PATH, "a+") as app_users_file:
+                    app_users_file.write(f"{user_phone},{user_name},\n")
+                    print("\nUser created successfully.\n")
+
+            if user_login_input == 3:
+                print("\nThank you, have a good day!")
+                exit()
+
+        else:
             print("1- Add a new contact")
             print("2- Update an existing contact")
             print("3- Delete an existing contact")
@@ -54,51 +101,6 @@ def main():
             if selected_choice == 5:
                 print("\nThank you, have a good day!")
                 exit()
-        else:
-            print("1- Login with an existing username")
-            print("2- Sign in as a new user")
-            print("3- Exit program")
-            user_login_input = int(input("Please select one of the options: "))
-            while True:
-                if user_login_input in [1, 2, 3]:
-                    break
-                else:
-                    print("Invalid option")
-                    user_login_input = input("Please select one of the options: ")
-            if user_login_input == 1:
-                user_phone = input("Please enter the phone number: ")
-                user_name = input("Please enter the username: ")
-                with open(APP_USERS_FILE_PATH, "a+") as app_users_file:
-                    app_users_file.seek(0)
-                    lines = app_users_file.readlines()
-                    for index, line in enumerate(lines):
-                        user_info = line.strip().split(",")
-                        if user_info[0] == user_phone and user_info[1] == user_name:
-                            app_user_details = AppUser(user_phone, user_name)
-                            # Create JSON or CSV based on user's requirement
-                            if requested_format == "csv":
-                                contact_book = CsvContactBook(app_user_details.get_phone_number())
-                            elif requested_format == "json":
-                                contact_book = JsonContactBook(app_user_details.get_phone_number())
-                            contact_book.load_contacts()
-                            contact_book.return_formatted_contacts()
-                            crud_record = CRUDRecord(contact_book)
-                            logged_in = True
-                            break
-                    else:
-                        print("Wrong user credentials. Please try again.")
-
-            if user_login_input == 2:
-                user_phone = input("Please enter the phone number: ")
-                user_name = input("Please enter the username: ")
-                with open(APP_USERS_FILE_PATH, "a+") as app_users_file:
-                    app_users_file.write(f"{user_phone},{user_name},\n")
-                    print("\nUser created successfully.\n")
-
-            if user_login_input == 3:
-                print("\nThank you, have a good day!")
-                exit()
 
 
 main()
-

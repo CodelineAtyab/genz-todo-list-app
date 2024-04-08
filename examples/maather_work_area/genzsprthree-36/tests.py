@@ -2,7 +2,7 @@ import unittest
 from validate_email import validate_email
 
 
-class TestValidateEmail:
+class TestValidateEmail(unittest.TestCase):
 
     def test_valid_standard_email(self):
         assert validate_email("test@example.com") == True

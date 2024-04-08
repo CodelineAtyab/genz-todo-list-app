@@ -1,50 +1,26 @@
 # main.py
 
 from contact_record import ContactRecord
-from contact_book import JSONContactBook, CSVContactBook
+from app_user import AppUser
 
 if __name__ == "__main__":
-    # Create JSON contact book
-    json_contact_book = JSONContactBook()
+    # Create an AppUser
+    user = AppUser("JohnDoe", "john@example.com")
 
-    # Adding contacts to JSON contact book
+    # Adding contacts to the user's ContactBook
     contact1 = ContactRecord("Tom", "1234567890", "tom@example.com", "123 St")
     contact2 = ContactRecord("Kate", "9876543210", "kate@example.com", "456 St")
-    json_contact_book.add_contact(contact1)
-    json_contact_book.add_contact(contact2)
+    user.add_contact(contact1)
+    user.add_contact(contact2)
 
-    # Save JSON contact book to file
-    json_contact_book.save("contacts.json")  # Sample JSON data will be saved here
+    # Save the ContactBook to a JSON file
+    user.save_contact_book("contacts", format='json')
 
-    # Load JSON contact book from file
-    loaded_json_contact_book = JSONContactBook()
-    loaded_json_contact_book.load("contacts.json")  # Sample JSON data will be loaded from here
+    # Load the ContactBook from the JSON file
+    user.load_contact_book("contacts", format='json')
 
-    # Searching for a contact in JSON contact book
-    results_json = loaded_json_contact_book.search_contact("Tom")
-    print("Contacts from JSON:")
-    for contact in results_json:
+    # Searching for a contact in the ContactBook
+    results = user.search_contact("Kate")
+    print("Contacts found:")
+    for contact in results:
         print(contact.to_dict())
-
-    # Create CSV contact book
-    csv_contact_book = CSVContactBook()
-
-    # Adding contacts to CSV contact book
-    contact3 = ContactRecord("Sally", "3333333333", "sally@example.com", "863 St")
-    contact4 = ContactRecord("Jessie", "2323232332", "jessie@example.com", "101 St")
-    csv_contact_book.add_contact(contact3)
-    csv_contact_book.add_contact(contact4)
-
-    # Save CSV contact book to file
-    csv_contact_book.save("contacts.csv")  # Sample CSV data will be saved here
-
-    # Load CSV contact book from file
-    loaded_csv_contact_book = CSVContactBook()
-    loaded_csv_contact_book.load("contacts.csv")  # Sample CSV data will be loaded from here
-
-    # Searching for a contact in CSV contact book
-    results_csv = loaded_csv_contact_book.search_contact("Sally")
-    print("\nContacts from CSV:")
-    for contact in results_csv:
-        print(contact.to_dict())
-

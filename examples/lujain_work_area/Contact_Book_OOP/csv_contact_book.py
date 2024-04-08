@@ -8,17 +8,28 @@ class CSVContactBook(AbstractContactBook):
     def __init__(self):
         self.contacts = []  # Initialize an empty list to store contacts
 
-    def save(self, filename):
+    def save(self, filename, format):
         """Save contacts to a CSV file."""
-        with open(filename, mode='w', newline='') as file:
+        file_extension = self.get_file_extension(format)
+        with open(filename + file_extension, mode='w', newline='') as file:
             writer = csv.DictWriter(file, fieldnames=['Name', 'Phone', 'Email', 'Address'])
             writer.writeheader()
             for contact in self.contacts:
                 writer.writerow(contact.to_dict())
 
-    def load(self, filename):
+    def load(self, filename, format):
         """Load contacts from a CSV file."""
-        with open(filename, mode='r') as file:
+        file_extension = self.get_file_extension(format)
+        with open(filename + file_extension, mode='r') as file:
             reader = csv.DictReader(file)
             for row in reader:
                 self.contacts.append(ContactRecord.from_dict(row))
+
+    def load(self, filename, format):
+        """Load contacts from a CSV file."""
+        file_extension = self.get_file_extension(format)
+        with open(filename + file_extension, mode='r') as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                self.contacts.append(ContactRecord.from_dict(row))
+

@@ -2,6 +2,7 @@
 
 from contact_book import ContactBook
 
+
 class AppUser:
     def __init__(self, username, email):
         self.username = username
@@ -26,14 +27,8 @@ class AppUser:
 
     def save_contact_book(self, filename, format):
         """Save the user's ContactBook to a file."""
-        if format == 'csv':
-            self.contact_book.save_to_csv(filename)
-        elif format == 'json':
-            self.contact_book.save_to_json(filename)
+        self.contact_book.save(filename, format)
 
     def load_contact_book(self, filename, format):
         """Load the user's ContactBook from a file."""
-        if format == 'csv':
-            self.contact_book.load_from_csv(filename)
-        elif format == 'json':
-            self.contact_book.load_from_json(filename)
+        self.contact_book.load(filename, format)

@@ -1,28 +1,28 @@
 import json
 import os
 from OOP_contact_record import ContactRecord
-from CSVdatastore import CSVDataStore
-from TXTdatastore import TXTDataStore
-from JSONdatastore import JSONDataStore
-from examples.abbas_work_area.datastore import DataStore
+from CSVdataformat import CSVDataFormat
+from TXTdataformat import TXTDataFormat
+from JSONdataformat import JSONDataFormat
+from examples.abbas_work_area.dataformat import DataFormat
 
 
 class ContactBook:
-    BASE_FILE_PATH = "C:/Users/71519/Documents/genz-todo-list-app/examples/abbas_work_area/data/store_contacts"
+    BASE_FILE_PATH = "data/store_contacts.csv"
 
     def __init__(self, storage_format='csv'):
         self.set_datastore(storage_format)
         self.storage_format = storage_format
-        self.datastore: DataStore = CSVDataStore()
+        self.dataformat: DataFormat = CSVDataFormat()
         self.CONTACT_FILE_PATH = f"{self.BASE_FILE_PATH}.{storage_format}"
 
     def set_datastore(self, storage_format):
         if storage_format == 'csv':
-            self.datastore = CSVDataStore()
+            self.dataformat = CSVDataFormat()
         elif storage_format == 'txt':
-            self.datastore = TXTDataStore()
+            self.dataformat = TXTDataFormat()
         elif storage_format == 'json':
-            self.datastore = JSONDataStore()
+            self.dataformat = JSONDataFormat()
         self.CONTACT_FILE_PATH = f"{self.BASE_FILE_PATH}.{storage_format}"
 
     def write_heading(self):
@@ -55,16 +55,16 @@ class ContactBook:
         :return: chooses the format of file based on user input
         """
         contact_record = ContactRecord(name, contact, email, address)
-        return self.datastore.format(contact_record)
+        return self.dataformat.format(contact_record)
 
     def store_contact(self, name, contact, email, address):
         contact_record = ContactRecord(name, contact, email, address)
-        store = CSVDataStore()
+        store = CSVDataFormat()
         record_str = store.format(contact_record)
         self.open_write_file(record_str, 'a')
         print("Contact added successfully!")
 
-    def load_and_store_contacts(self, new_format):
+    def load_contacts(self, new_format):
         """
         :param new_format: contains users chosen format e.g: csv, txt, json
         :return: stores formatted data into the chosen file type in order to execute users request to

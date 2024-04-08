@@ -42,7 +42,7 @@ def main():
                 print("Invalid choice, defaulting to CSV format.")
                 new_format = 'csv'
 
-            contact_book.load_and_store_contacts(new_format)
+            contact_book.load_contacts(new_format)
             running = False
 
         elif choice == 3:  # Update a record

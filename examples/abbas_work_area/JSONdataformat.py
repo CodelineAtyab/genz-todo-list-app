@@ -1,9 +1,9 @@
 import json
 
-from examples.abbas_work_area.datastore import DataStore
+from examples.abbas_work_area.dataformat import DataFormat
 
 
-class JSONDataStore(DataStore):
+class JSONDataFormat(DataFormat):
     def format(self, contact_record):
         return json.dumps({
             "name": contact_record.add_name,

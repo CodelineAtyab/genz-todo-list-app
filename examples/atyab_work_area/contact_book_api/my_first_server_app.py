@@ -1,31 +1,13 @@
 import cherrypy
 import os
 
+from controller.contact_records_controller import ContactRecordsV1
+
 
 class Root(object):
     @cherrypy.expose()
     def index(self):
         pass
-
-
-class ContactRecordsV1(object):
-    exposed = True
-
-    def GET(self, phone_number):
-        return f"Handled READ request with this phone number: {phone_number}"
-
-
-    @cherrypy.tools.json_in()
-    def POST(self, *args, **kwargs):
-        return f"Handled CREATE request with this data: {cherrypy.request.json}"
-
-    @cherrypy.tools.json_in()
-    def PUT(self, phone_number):
-        return f"Handled UPDATE request with this data: {cherrypy.request.json}"
-
-
-    def DELETE(self, phone_number):
-        return f"Handled REMOVE request with this data: {phone_number}"
 
 
 cherrypy.config.update({'server.socket_host': '0.0.0.0', 'server.socket_port': 8080})

@@ -10,7 +10,11 @@ def main():
         print("(2) Load To Do List")
         print("(3) Exit")
 
-        choice = int(input("Enter desired operation: "))
+        try:
+            choice = int(input("Enter desired operation: "))
+        except Exception as ex:
+            print("Error, enter your chosen command again.", ex)
+            continue
 
         if choice == 1:
             description = input("Enter Task Description: ")

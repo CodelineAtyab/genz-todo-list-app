@@ -1,0 +1,20 @@
+[
+    {
+        "_ContactRecord__name": "Jane Smith",
+        "_ContactRecord__phone_number": "jane@example.com",
+        "_ContactRecord__email": "9876543210",
+        "_ContactRecord__address": "Address: Not specified"
+    },
+    {
+        "_ContactRecord__name": "Bob",
+        "_ContactRecord__phone_number": "4567890123",
+        "_ContactRecord__email": "bob@example.com",
+        "_ContactRecord__address": "456 Elm St"
+    },
+    {
+        "_ContactRecord__name": "Eve",
+        "_ContactRecord__phone_number": "7890123456",
+        "_ContactRecord__email": "eve@example.com",
+        "_ContactRecord__address": "789 Oak St"
+    }
+]

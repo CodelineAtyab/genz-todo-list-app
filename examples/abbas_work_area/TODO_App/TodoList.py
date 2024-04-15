@@ -5,7 +5,7 @@ from Item import Item
 
 
 class TodoList:
-    BASE_FILE_PATH = "data/store_list.csv"
+    BASE_FILE_PATH = "./data/store_list.csv"
 
     def __init__(self):
         self.items = []

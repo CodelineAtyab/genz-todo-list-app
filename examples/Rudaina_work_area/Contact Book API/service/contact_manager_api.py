@@ -1,19 +1,40 @@
 import cherrypy
-from service.contact_record import ContactRecord
-from service.app_user import AppUser
+from contact_record import ContactRecord
+from app_user import AppUser
 
 
 class ContactBookAPI:
+    # @cherrypy.tools.json_out()
+    # def GET(self, email=None):
+    #     if email:
+    #         contact = self.user.contact_book.search(email)
+    #         if contact:
+    #             return contact.__dict__
+    #         else:
+    #             raise cherrypy.HTTPError(404, "Contact not found")
+    #     else:
+    #         return [contact.__dict__ for contact in self.user.contact_book.contacts]
+
+    exposed = True
+
     @cherrypy.tools.json_out()
-    def GET(self, email=None):
-        if email:
-            contact = self.user.contact_book.search(email)
-            if contact:
-                return contact.__dict__
-            else:
-                raise cherrypy.HTTPError(404, "Contact not found")
+    def GET(self, email=None, username=None, phone=None):
+        if email and username and phone:
+            user = AppUser(username, email, phone)
+            print("User:", user.__dict__)
+            print("Contacts:", [contact.__dict__ for contact in user.contact_book.contacts])
+            return [contact.to_dict() for contact in user.contact_book.contacts]
         else:
-            return [contact.__dict__ for contact in self.user.contact_book.contacts]
+            raise cherrypy.HTTPError(400, "Invalid request parameters")
+
+    # def GET(self, email=None, username=None, phone=None):
+    #     if email and username and phone:
+    #         user = AppUser(username, email, phone)
+    #         return [contact.__dict__ for contact in user.contact_book.contacts]
+    #
+    #         # return user.__dict__
+    #     else:
+    #         raise cherrypy.HTTPError(400, "Invalid request parameters")
 
     @cherrypy.tools.json_in()
     def POST(self):
@@ -33,6 +54,7 @@ class ContactBookAPI:
         self.user.contact_book.delete(email)
         return {"message": "Contact deleted successfully"}
 
+
 if __name__ == '__main__':
     def create_user(username, email, phone):
         return AppUser(username, email, phone)
@@ -42,7 +64,6 @@ if __name__ == '__main__':
         contact_book_api.user = create_user(username, email, phone)
         return contact_book_api
 
-    # Define the URL mapping for the CherryPy API
     class Root:
         @cherrypy.expose
         def contacts(self, username=None, email=None, phone=None):

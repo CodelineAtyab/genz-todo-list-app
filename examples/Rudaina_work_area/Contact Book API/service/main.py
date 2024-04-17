@@ -1,6 +1,5 @@
-from service.contact_record import ContactRecord
-from service.app_user import AppUser
-
+from contact_record import ContactRecord
+from app_user import AppUser
 
 def main():
 

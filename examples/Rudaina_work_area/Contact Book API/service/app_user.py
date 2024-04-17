@@ -1,5 +1,5 @@
-from contact_record import ContactRecord
 from contact_book import JsonContactBook
+from contact_record import ContactRecord
 
 
 class AppUser:

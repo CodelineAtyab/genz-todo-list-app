@@ -1,5 +1,5 @@
-from models.TodoList import TodoList
-from models.Item import Item
+from models.todolist import TodoList
+from models.item import Item
 
 
 

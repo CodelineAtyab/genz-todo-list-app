@@ -1,7 +1,7 @@
 import os
 
 
-from models.Item import Item
+from models.item import Item
 
 
 class TodoList:

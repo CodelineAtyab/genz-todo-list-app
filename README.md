@@ -2,4 +2,4 @@
 
 ### Please wait while we are on it
 
-some info here
+Change the working directory to src/main_app.py

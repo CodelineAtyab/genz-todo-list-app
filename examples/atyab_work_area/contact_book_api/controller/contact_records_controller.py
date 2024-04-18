@@ -8,7 +8,17 @@ class ContactRecordsV1(object):
 
     @cherrypy.tools.json_out()
     def GET(self, phone_number=None):
-        res_msg = {"status": "FAIL", "data": [rec.__dict__ for rec in contact_book_service_instance.contact_book.contact_records]}
+        res_msg = {"status": "FAIL", "data": []}
+        if phone_number:
+            # for rec in contact_book_service_instance.contact_book.contact_records:
+            #     if rec.phone_num == phone_number:
+            #         res_msg = {"status": "PASS", "data": rec.__dict__}
+            filtered_contact_rec = list(filter(lambda rec: rec["phone_num"] == phone_number, contact_book_service_instance.contact_book.contact_records))[0]
+            res_msg = {"status": "PASS", "data": filtered_contact_rec}
+        else:
+            res_msg = {"status": "PASS",
+                       "data": contact_book_service_instance.contact_book.contact_records}
+
         return res_msg
 
 

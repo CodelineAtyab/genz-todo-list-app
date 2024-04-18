@@ -1,5 +1,5 @@
 import os
-
+import json
 
 from models.Item import Item
 
@@ -64,3 +64,17 @@ class TodoList:
         except Exception as ex:
             print("Error", ex)
 
+    def filter_items(self, status=""):
+        """
+        A function to return items based on their status (pending/completed)
+        :param status: pending, completed, or none
+        :return: a filtered list of items in a json format
+        """
+        items_list = self.open_write_file(state="r")
+        if status == "completed":
+            filtered_list = [item.split(',')[0].strip() for item in items_list if "completed" in item]
+        elif status == "pending":
+            filtered_list = [item.split(',')[0].strip() for item in items_list if "pending" in item]
+        else:
+            filtered_list = [item.strip() for item in items_list]
+        return json.dumps(filtered_list)

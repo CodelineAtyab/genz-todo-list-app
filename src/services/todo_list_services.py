@@ -20,5 +20,8 @@ todo_list.append_item(Item("Buy groceries", "pending"))
 todo_list.append_item(Item("Complete homework", "in progress"))
 todo_list.append_item(Item("Complete homewoddddrk", "in progrggess"))
 
+if __name__ == "__main__":
+    print(todo_list.filter_items("pending"))
+
 
 

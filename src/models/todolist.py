@@ -27,11 +27,11 @@ class TodoList:
                             the task does not get added and "Task Already Exists" is returned
         """
 
-        return any(item.description.strip().lower() == existing_item.description.strip().lower() for existing_item in
-                   self.items)
+        return not any(item.description.strip().lower() == existing_item.description.strip().lower()
+                       for existing_item in self.items)
 
     def append_item(self, item):
-        if self.validate_item(item):
+        if not self.validate_item(item):
             print("Task Already in List")
         else:
             self.items.append(item)

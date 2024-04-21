@@ -1,8 +1,6 @@
 import cherrypy
-from src.models.item import Item
-from src.models.todolist import TodoList
-# TODO: After putting the business logic in services, we can import it here
-#  from service.contact_records_service import data_store_dict
+
+from src.services import todo_list_services
 
 
 class TodoRecordsV1(object):
@@ -41,24 +39,24 @@ class TodoRecordsV1(object):
         """
 
         res_msg = {"status": "FAIL", "data": ""}
-        request_data = cherrypy.request.json
-        for item in self.items:
-            if item.description.strip().lower() == todo_description.strip().lower():
-                item = item
-
-        if item:
-            item = TodoList.validate_item(item)
-            if 'description' in request_data:
-                item.description = request_data['description']
-            if 'status' in request_data:
-                item.status = request_data['status']
-
-            TodoList.save_items()
-            res_msg['status'] = 'SUCCESS'
-            res_msg['data'] = item.__dict__
-        else:
-            cherrypy.response.status = 404  # Not Found
-            res_msg['data'] = 'Item not found.'
+        # request_data = cherrypy.request.json
+        # for item in self.items:
+        #     if item.description.strip().lower() == todo_description.strip().lower():
+        #         item = item
+        #
+        # if item:
+        #     item = TodoList.validate_item(item)
+        #     if 'description' in request_data:
+        #         item.description = request_data['description']
+        #     if 'status' in request_data:
+        #         item.status = request_data['status']
+        #
+        #     TodoList.save_items()
+        #     res_msg['status'] = 'SUCCESS'
+        #     res_msg['data'] = item.__dict__
+        # else:
+        #     cherrypy.response.status = 404  # Not Found
+        #     res_msg['data'] = 'Item not found.'
         return res_msg
 
     @cherrypy.tools.json_out()

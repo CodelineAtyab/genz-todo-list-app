@@ -15,7 +15,10 @@ class TodoRecordsV1(object):
         :return: All the records if id is None, otherwise a specific record if there is an id.
         Dict will be converted to JSON automatically due to the json_out decorator.
         """
-        res_msg = {"status": "FAIL", "data": ""}
+        res_msg = {"status": "PASS", "data": [
+            {"description": "some description one", "status": "pending"},
+            {"description": "another description two", "status": "completed"}
+        ]}
         return res_msg
 
 

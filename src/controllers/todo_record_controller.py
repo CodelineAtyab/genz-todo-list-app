@@ -1,7 +1,6 @@
 import cherrypy
 
-# TODO: After putting the business logic in services, we can import it here
-#  from service.contact_records_service import data_store_dict
+from src.services import todo_list_services
 
 
 class TodoRecordsV1(object):

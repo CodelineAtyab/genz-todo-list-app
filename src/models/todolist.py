@@ -1,11 +1,11 @@
 import os
 import json
 
-from models.item import Item
+from src.models.item import Item
 
 
 class TodoList:
-    BASE_FILE_PATH = "../data/store_list.csv"
+    BASE_FILE_PATH = "./data/store_list.csv"
 
     def __init__(self):
         self.items = []

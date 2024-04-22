@@ -16,9 +16,7 @@ class TodoRecordsV1(object):
         :return: All the records if id is None, otherwise a specific record if there is an id.
         Dict will be converted to JSON automatically due to the json_out decorator.
         """
-        # Open the file and read everything using readlines()
-        list_of_lines_in_file = TodoList.open_write_file()
-        
+        # Generates the data for the response
         def create_list_of_dictionaries(data_values):
             list_of_dicts = []
             for item in data_values:
@@ -28,16 +26,16 @@ class TodoRecordsV1(object):
             return list_of_dicts
         
         # If task list is empty
-        if len(list_of_lines_in_file) < 2: 
+        if len(todo_list_services.list_of_lines_in_file) < 2: 
             res_msg = {"status": "SUCCESS", "data": "EMPTY LIST"}
         # GET request all items
         elif description == None: 
-            res_msg = {"status": "SUCCESS", "data": create_list_of_dictionaries(list_of_lines_in_file[1:])}
+            res_msg = {"status": "SUCCESS", "data": create_list_of_dictionaries(todo_list_services.list_of_lines_in_file[1:])}
         # GET request one item
         else:
             found_items = []
             # Search for the item in task list
-            for item in list_of_lines_in_file:
+            for item in todo_list_services.list_of_lines_in_file:
                 item_data: list[str] = item.split(",")
                 if item_data[0].lower() == description.lower():
                     found_items.append(item)

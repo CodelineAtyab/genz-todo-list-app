@@ -1,7 +1,6 @@
 import cherrypy
 
 from src.services import todo_list_services
-from src.models.todolist import TodoList
 
 
 class TodoRecordsV1(object):
@@ -20,24 +19,22 @@ class TodoRecordsV1(object):
         def create_list_of_dictionaries(data_values):
             list_of_dicts = []
             for item in data_values:
-                item_data = item.split(",")
-                new_dict = {"description": item_data[0], "status": item_data[1]}
+                new_dict = {"description": item.description, "status": item.status}
                 list_of_dicts.append(new_dict)
             return list_of_dicts
         
         # If task list is empty
         if len(todo_list_services.list_of_lines_in_file) < 2: 
-            res_msg = {"status": "SUCCESS", "data": "EMPTY LIST"}
+            res_msg = {"status": "SUCCESS", "data": []}
         # GET request all items
         elif description == None: 
-            res_msg = {"status": "SUCCESS", "data": create_list_of_dictionaries(todo_list_services.list_of_lines_in_file[1:])}
+            res_msg = {"status": "SUCCESS", "data": create_list_of_dictionaries(todo_list_services.todo_list.items[1:])}
         # GET request one item
         else:
             found_items = []
             # Search for the item in task list
-            for item in todo_list_services.list_of_lines_in_file:
-                item_data: list[str] = item.split(",")
-                if item_data[0].lower() == description.lower():
+            for item in todo_list_services.todo_list.items:
+                if item.description.lower() == description.lower():
                     found_items.append(item)
             # If item is found in task list
             if found_items:

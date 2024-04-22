@@ -17,7 +17,6 @@ class TodoRecordsV1(object):
         res_msg = {"status": "FAIL", "data": ""}
         return res_msg
 
-
     @cherrypy.tools.json_in()
     @cherrypy.tools.json_out()
     def POST(self):
@@ -31,13 +30,36 @@ class TodoRecordsV1(object):
 
     @cherrypy.tools.json_in()
     @cherrypy.tools.json_out()
-    def PUT(self, record_id=None):
+    def PUT(self, todo_description=None):
         """
         Handles the PUT request and returns a JSON response.
-        :param record_id: Id of a specific todo record resource.
+        :param todo_description: description of a specific todo record resource.
         :return: The status, if the operation is successful or not, along with the record that is updated.
         """
+
         res_msg = {"status": "FAIL", "data": ""}
+        request_data = cherrypy.request.json
+        found_item: todo_list_services.Item = None
+        for item in todo_list_services.todo_list:
+            if item.description.strip().lower() == todo_description.strip().lower():
+                found_item = item
+
+        if found_item:
+            item_to_update = todo_list_services.Item(description=found_item.description,
+                                                     status=found_item.status)
+            if 'description' in request_data:
+                item_to_update.description = request_data['description']
+            if 'status' in request_data:
+                item_to_update.description = request_data['Status']
+
+        updated = todo_list_services.todo_list.replace_item(found_item, item_to_update)
+
+        if updated:
+            res_msg['status'] = 'SUCCESS'
+            res_msg['data'] = item.__dict__
+        else:
+            cherrypy.response.status = 404  # Not Found
+            res_msg['data'] = 'Item not found.'
         return res_msg
 
     @cherrypy.tools.json_out()

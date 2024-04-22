@@ -1,0 +1,8 @@
+[
+    {
+        "_ContactRecord__name": "John Doe",
+        "_ContactRecord__phone_number": "john@example.com",
+        "_ContactRecord__email": "1234567890",
+        "_ContactRecord__address": "Address: Not specified"
+    }
+]

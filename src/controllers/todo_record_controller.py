@@ -106,22 +106,23 @@ class TodoRecordsV1(object):
         """
         try:
             if description:
-                deleted_items = [item for item in self.todo_list.items if item.description == description]
-                self.todo_list.items = [item for item in self.todo_list.items if item.description != description]
+                items_to_delete = [item for item in self.todo_list.items if item.description == description]
+                for item_to_delete in items_to_delete:
+                    self.todo_list.items.remove(item_to_delete)
             elif status:
-                deleted_items = [item for item in self.todo_list.items if item.status == status]
-                self.todo_list.items = [item for item in self.todo_list.items if item.status != status]
+                items_to_delete = [item for item in self.todo_list.items if item.status == status]
+                for item_to_delete in items_to_delete:
+                    self.todo_list.items.remove(item_to_delete)
             else:
                 cherrypy.response.status = 400
                 return {"Error": "Neither description nor status provided for deletion"}
 
-            if not deleted_items:
+            if not items_to_delete:
                 cherrypy.response.status = 404
                 return {"Error": "No matching items found for deletion"}
 
             self.todo_list.save_items()
-            # cherrypy.response.status = 204
-            return {"Message": f"{len(deleted_items)} item(s) deleted successfully"}
+            return {"Message": f"{len(items_to_delete)} item(s) deleted successfully"}
 
         except Exception as e:
             cherrypy.response.status = 500

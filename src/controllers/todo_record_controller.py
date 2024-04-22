@@ -49,6 +49,13 @@ class TodoRecordsV1(object):
     @cherrypy.tools.json_in()
     @cherrypy.tools.json_out()
     def POST(self):
+        """
+        Handles the POST request and returns a JSON response.
+        The incoming raw JSON body would exist in cherrypy.request.json because of json_in decorator.
+        :return: The status, if the operation is successful or not, along with the record that is created.
+        """
+        res_msg = {"status": "FAIL", "data": ""}
+
         # Extract data from JSON payload
         input_data = cherrypy.request.json
         description = input_data.get('description')
@@ -64,7 +71,9 @@ class TodoRecordsV1(object):
 
         # Return the new item details and 201 Created status code
         cherrypy.response.status = 201
-        return {"status": "success", "data": {"description": new_item.description, "status": new_item.status}}
+        res_msg["status"] = "success"
+        res_msg["data"] = {"description": new_item.description, "status": new_item.status}
+        return res_msg
 
     # Assuming the TodoList class has the method append_item that adds an item
 

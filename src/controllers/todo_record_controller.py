@@ -1,20 +1,49 @@
 import cherrypy
 
 from src.services import todo_list_services
+from src.models.todolist import TodoList
 
 
 class TodoRecordsV1(object):
     exposed = True
 
+
     @cherrypy.tools.json_out()
-    def GET(self, record_id=None):
+    def GET(self, description: str=None):
         """
         Handles the GET request and return a JSON response.
         :param record_id: Id of a specific todo record resource.
         :return: All the records if id is None, otherwise a specific record if there is an id.
         Dict will be converted to JSON automatically due to the json_out decorator.
         """
-        res_msg = {"status": "FAIL", "data": ""}
+        # Generates the data for the response
+        def create_list_of_dictionaries(data_values):
+            list_of_dicts = []
+            for item in data_values:
+                item_data = item.split(",")
+                new_dict = {"description": item_data[0], "status": item_data[1]}
+                list_of_dicts.append(new_dict)
+            return list_of_dicts
+        
+        # If task list is empty
+        if len(todo_list_services.list_of_lines_in_file) < 2: 
+            res_msg = {"status": "SUCCESS", "data": "EMPTY LIST"}
+        # GET request all items
+        elif description == None: 
+            res_msg = {"status": "SUCCESS", "data": create_list_of_dictionaries(todo_list_services.list_of_lines_in_file[1:])}
+        # GET request one item
+        else:
+            found_items = []
+            # Search for the item in task list
+            for item in todo_list_services.list_of_lines_in_file:
+                item_data: list[str] = item.split(",")
+                if item_data[0].lower() == description.lower():
+                    found_items.append(item)
+            # If item is found in task list
+            if found_items:
+                res_msg = {"status": "SUCCESS", "data": create_list_of_dictionaries(found_items)}
+            else: 
+                res_msg = {"status": "FAIL", "data": "NOT FOUND"}
         return res_msg
 
     @cherrypy.tools.json_in()

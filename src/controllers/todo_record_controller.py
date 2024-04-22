@@ -1,6 +1,7 @@
 import cherrypy
 
 from src.services import todo_list_services
+from src.models.todolist import TodoList
 
 
 class TodoRecordsV1(object):

@@ -9,7 +9,7 @@ class TodoRecordsV1(object):
 
 
     @cherrypy.tools.json_out()
-    def GET(self, record_id=None):
+    def GET(self, description: str=None):
         """
         Handles the GET request and return a JSON response.
         :param record_id: Id of a specific todo record resource.
@@ -31,15 +31,15 @@ class TodoRecordsV1(object):
         if len(list_of_lines_in_file) < 2: 
             res_msg = {"status": "SUCCESS", "data": "EMPTY LIST"}
         # GET request all items
-        elif record_id == None: 
+        elif description == None: 
             res_msg = {"status": "SUCCESS", "data": create_list_of_dictionaries(list_of_lines_in_file[1:])}
         # GET request one item
         else:
             found_items = []
             # Search for the item in task list
             for item in list_of_lines_in_file:
-                item_data = item.split(",")
-                if item_data[0] == record_id:
+                item_data: list[str] = item.split(",")
+                if item_data[0].lower() == description.lower():
                     found_items.append(item)
             # If item is found in task list
             if found_items:

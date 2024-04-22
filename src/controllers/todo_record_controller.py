@@ -7,6 +7,9 @@ from src.models.todolist import TodoList
 class TodoRecordsV1(object):
     exposed = True
 
+    def __init__(self):
+        self.todo_list = TodoList()
+
 
     @cherrypy.tools.json_out()
     def GET(self, description: str=None):
@@ -91,12 +94,37 @@ class TodoRecordsV1(object):
             res_msg['data'] = 'Item not found.'
         return res_msg
 
+
+    @cherrypy.expose
     @cherrypy.tools.json_out()
-    def DELETE(self, record_id=None):
+    @cherrypy.tools.json_in()
+    def DELETE(self, description=None, status=None):
         """
         Handles the DELETE request and returns a JSON response.
         :param record_id: Id of a specific todo record resource.
         :return: The status, if the operation is successful or not, along with the record that is deleted.
         """
-        res_msg = {"status": "FAIL", "data": ""}
-        return res_msg
+        try:
+            if description:
+                deleted_items = [item for item in self.todo_list.items if item.description == description]
+                self.todo_list.items = [item for item in self.todo_list.items if item.description != description]
+            elif status:
+                deleted_items = [item for item in self.todo_list.items if item.status == status]
+                self.todo_list.items = [item for item in self.todo_list.items if item.status != status]
+            else:
+                cherrypy.response.status = 400
+                return {"Error": "Neither description nor status provided for deletion"}
+
+            if not deleted_items:
+                cherrypy.response.status = 404
+                return {"Error": "No matching items found for deletion"}
+
+            self.todo_list.save_items()
+            # cherrypy.response.status = 204
+            return {"Message": f"{len(deleted_items)} item(s) deleted successfully"}
+
+        except Exception as e:
+            cherrypy.response.status = 500
+            return {"error": str(e)}
+        # res_msg = {"status": "FAIL", "data": ""}
+        # return res_msg

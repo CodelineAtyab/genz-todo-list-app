@@ -21,22 +21,36 @@ class TodoList:
         if not os.path.exists(self.BASE_FILE_PATH):  # checks if file exists
             self.write_heading()
 
-    def validate_item(self, item):
+    def __validate_item(self, item):
         """
         :param item: based on description, a check occurs to see if task already exists, if it does,
                             the task does not get added and "Task Already Exists" is returned
         """
 
-        return any(item.description.strip().lower() == existing_item.description.strip().lower() for existing_item in
-                   self.items)
+        return not any(item.description.strip().lower() == existing_item.description.strip().lower()
+                       for existing_item in self.items)
+
+    def replace_item(self, old_item, new_item):
+        updated_item = False
+        if self.__validate_item(new_item):
+            self.items.remove(old_item)
+            self.items.append(new_item)
+            self.save_items()
+            updated_item = True
+
+        return updated_item
 
     def append_item(self, item):
-        if self.validate_item(item):
-            print("Task Already in List")
-        else:
+        """
+
+        """
+        appended_successfully = False
+        if self.__validate_item(item):
             self.items.append(item)
             self.save_items()
-            print("List Saved")
+            appended_successfully = True
+
+        return appended_successfully
 
     def save_items(self):
         """

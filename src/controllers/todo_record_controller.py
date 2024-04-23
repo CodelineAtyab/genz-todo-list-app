@@ -2,6 +2,7 @@ import cherrypy
 
 from src.models.item import Item
 from src.services import todo_list_services
+from src.models.todolist import TodoList
 
 
 class TodoRecordsV1(object):
@@ -122,6 +123,7 @@ class TodoRecordsV1(object):
         :param record_id: Id of a specific todo record resource.
         :return: The status, if the operation is successful or not, along with the record that is deleted.
         """
+        res_msg = {"status": "FAIL", "data": ""}
         try:
             if description:
                 items_to_delete = [item for item in self.todo_list.items if item.description == description]
@@ -140,10 +142,11 @@ class TodoRecordsV1(object):
                 return {"Error": "No matching items found for deletion"}
 
             self.todo_list.save_items()
-            return {"Message": f"{len(items_to_delete)} item(s) deleted successfully"}
+            if items_to_delete:
+                res_msg['status'] = 'SUCCESS'
+                res_msg['data'] = 'DELETED'
 
+            return res_msg
         except Exception as e:
             cherrypy.response.status = 500
             return {"error": str(e)}
-        # res_msg = {"status": "FAIL", "data": ""}
-        # return res_msg

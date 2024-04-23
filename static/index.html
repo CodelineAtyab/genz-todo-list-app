@@ -1,128 +1,128 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GenZ TDL</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .container {
-            margin-top: 50px;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1 class="mb-4">My Plan for Today</h1>
-        <!-- Todo List Display -->
-        <div class="row">
-            <div class="col">
-                <table id="todo_table" class="table">
-                    <thead>
-                        <tr>
-                            <th>What's the plan ?</th>
-                            <th>Is it done ?</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Todo list items will be added dynamically here -->
-                    </tbody>
-                </table>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>GenZ TDL</title>
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+        <style>
+            .container {
+                margin-top: 50px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1 class="mb-4">My Plan for Today</h1>
+            <!-- Todo List Display -->
+            <div class="row">
+                <div class="col">
+                    <table id="todo_table" class="table">
+                        <thead>
+                            <tr>
+                                <th>What's the plan ?</th>
+                                <th>Is it done ?</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Todo list items will be added dynamically here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- Todo List Form -->
+            <div class="row mt-4">
+                <div class="col">
+                    <h2>Remind me about / Note Down:</h2>
+                    <form id="todo_form">
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description:</label>
+                            <input type="text" class="form-control" id="description" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="status" class="form-label">Status:</label>
+                            <select class="form-select" id="status" required>
+                                <option value="Pending">Pending</option>
+                                <option value="Completed">Completed</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Put it as a reminder</button>
+                    </form>
+                </div>
             </div>
         </div>
-        <!-- Todo List Form -->
-        <div class="row mt-4">
-            <div class="col">
-                <h2>Remind me about / Note Down:</h2>
-                <form id="todo_form">
-                    <div class="mb-3">
-                        <label for="description" class="form-label">Description:</label>
-                        <input type="text" class="form-control" id="description" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="status" class="form-label">Status:</label>
-                        <select class="form-select" id="status" required>
-                            <option value="Pending">Pending</option>
-                            <option value="Completed">Completed</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Put it as a reminder</button>
-                </form>
-            </div>
-        </div>
-    </div>
 
-    <!-- Bootstrap JS (optional if you need JS features) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        document.getElementById("todo_form").addEventListener("submit", function(event) {
-            event.preventDefault();
-            // Get form values
-            let description = document.getElementById("description").value;
-            let status = document.getElementById("status").value;
-            
-            // Send a POST request to save the data
-            const myHeaders = new Headers();
-            myHeaders.append("Content-Type", "application/json");
-
-            const raw = JSON.stringify({
-                "description": description.trim().toLowerCase(),
-                "status": status.trim().toLowerCase()
-            });
-
-            const requestOptions = {
-                method: "POST",
-                headers: myHeaders,
-                body: raw,
-                redirect: "follow"
-            };
-
-            fetch("http://localhost:8080/api/v1/todoRecords", requestOptions)
-            .then((response) => response.json())
-            .then((result) => {
-                // Create new todo list row
-                let todo_table = document.getElementById("todo_table");
-                let newRow = todo_table.insertRow();
-                let cell1 = newRow.insertCell(0);
-                let cell2 = newRow.insertCell(1);
+        <!-- Bootstrap JS (optional if you need JS features) -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+            document.getElementById("todo_form").addEventListener("submit", function(event) {
+                event.preventDefault();
+                // Get form values
+                let description = document.getElementById("description").value;
+                let status = document.getElementById("status").value;
                 
-                // Update the table
-                cell1.innerHTML = description;
+                // Send a POST request to save the data
+                const myHeaders = new Headers();
+                myHeaders.append("Content-Type", "application/json");
 
-                status = status.trim().toUpperCase()
-                status_class = "btn btn-warning";
-                if (status === "COMPLETED") {
-                    status_class = "btn btn-success";
-                }
-                cell2.innerHTML = `<span class="${status_class}">${status}</span>`;
+                const raw = JSON.stringify({
+                    "description": description.trim().toLowerCase(),
+                    "status": status.trim().toLowerCase()
+                });
 
-                // Clear form inputs
-                document.getElementById("description").value = "";
-                document.getElementById("status").value = "Pending";
-            })
-            .catch((error) => console.error(error));
-        });
+                const requestOptions = {
+                    method: "POST",
+                    headers: myHeaders,
+                    body: raw,
+                    redirect: "follow"
+                };
 
-        // Fetch todo list items from GenZ API
-        fetch("http://localhost:8080/api/v1/todoRecords")
-        .then(response => response.json())
-        .then(jsonResponse => {
-            let todo_table = document.getElementById("todo_table");
-            jsonResponse.data.forEach(item => {
-                let newRow = todo_table.insertRow();
-                let cell1 = newRow.insertCell(0);
-                let cell2 = newRow.insertCell(1);
-                cell1.innerHTML = item.description;
+                fetch("http://localhost:8080/api/v1/todoRecords", requestOptions)
+                .then((response) => response.json())
+                .then((result) => {
+                    // Create new todo list row
+                    let todo_table = document.getElementById("todo_table");
+                    let newRow = todo_table.insertRow();
+                    let cell1 = newRow.insertCell(0);
+                    let cell2 = newRow.insertCell(1);
+                    
+                    // Update the table
+                    cell1.innerHTML = description;
 
-                item.status = item.status.trim().toUpperCase()
-                status_class = "btn btn-warning";
-                if (item.status === "COMPLETED") {
-                    status_class = "btn btn-success";
-                }
-                cell2.innerHTML = `<span class="${status_class}">${item.status}</span>`;
+                    status = status.trim().toUpperCase()
+                    status_class = "btn btn-warning";
+                    if (status === "COMPLETED") {
+                        status_class = "btn btn-success";
+                    }
+                    cell2.innerHTML = `<span class="${status_class}">${status}</span>`;
+
+                    // Clear form inputs
+                    document.getElementById("description").value = "";
+                    document.getElementById("status").value = "Pending";
+                })
+                .catch((error) => console.error(error));
             });
-        });
-    </script>
-</body>
+
+            // Fetch todo list items from GenZ API
+            fetch("http://localhost:8080/api/v1/todoRecords")
+            .then(response => response.json())
+            .then(jsonResponse => {
+                let todo_table = document.getElementById("todo_table");
+                jsonResponse.data.forEach(item => {
+                    let newRow = todo_table.insertRow();
+                    let cell1 = newRow.insertCell(0);
+                    let cell2 = newRow.insertCell(1);
+                    cell1.innerHTML = item.description;
+
+                    item.status = item.status.trim().toUpperCase()
+                    status_class = "btn btn-warning";
+                    if (item.status === "COMPLETED") {
+                        status_class = "btn btn-success";
+                    }
+                    cell2.innerHTML = `<span class="${status_class}">${item.status}</span>`;
+                });
+            });
+        </script>
+    </body>
 </html>

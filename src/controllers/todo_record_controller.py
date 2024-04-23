@@ -9,13 +9,15 @@ class TodoRecordsV1(object):
 
 
     @cherrypy.tools.json_out()
-    def GET(self, description: str=None):
+    def GET(self, description: str = ""):
         """
         Handles the GET request and return a JSON response.
-        :param record_id: Id of a specific todo record resource.
+        :param description: Description of a specific todo record resource.
         :return: All the records if id is None, otherwise a specific record if there is an id.
         Dict will be converted to JSON automatically due to the json_out decorator.
         """
+        res_msg = {"status": "FAIL", "data": []}
+
         # Generates the data for the response
         def create_list_of_dictionaries(data_values):
             list_of_dicts = []
@@ -23,13 +25,12 @@ class TodoRecordsV1(object):
                 new_dict = {"description": item.description, "status": item.status}
                 list_of_dicts.append(new_dict)
             return list_of_dicts
-        
-        # If task list is empty
-        if len(todo_list_services.list_of_lines_in_file) < 1:
-            res_msg = {"status": "SUCCESS", "data": []}
+
         # GET request all items
-        elif description == None: 
-            res_msg = {"status": "SUCCESS", "data": create_list_of_dictionaries(todo_list_services.todo_list.items[1:])}
+        if not description:
+            res_msg["status"] = "SUCCESS"
+            res_msg["data"] = create_list_of_dictionaries(todo_list_services.todo_list.items[1:])
+
         # GET request one item
         else:
             found_items = []

@@ -9,7 +9,7 @@ class Root(object):
     @cherrypy.expose()
     def index(self):
         """
-        This function is going to return backup_index.html files present in the static directory.
+        This function is going to return index.html files present in the static directory.
         We don't need to implement it since it configured and cherrypy is going to handle it.
         """
         pass

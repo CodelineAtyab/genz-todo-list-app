@@ -7,6 +7,7 @@ from src.services import todo_list_services
 class TodoRecordsV1(object):
     exposed = True
 
+
     @cherrypy.tools.json_out()
     def GET(self, description: str=None):
         """
@@ -41,7 +42,6 @@ class TodoRecordsV1(object):
                 res_msg = {"status": "SUCCESS", "data": create_list_of_dictionaries(found_items)}
             else: 
                 res_msg = {"status": "FAIL", "data": "NOT FOUND"}
-
         return res_msg
 
     @cherrypy.tools.json_in()

@@ -53,10 +53,27 @@
             // Get form values
             let description = document.getElementById("description").value;
             let status = document.getElementById("status").value;
+            
             // Create new todo list item
             let new_item = document.createElement("li");
+            let status_span = document.createElement("span");
+
+            if (status.trim().toLowerCase() === "completed") {
+                status_span.className = "btn btn-primary";
+                status_span.innerHTML = "Completed";
+            } else {
+                status_span.className = "btn btn-warning";
+                status_span.innerHTML = "Pending";
+            }
+
             new_item.className = "list-group-item";
-            new_item.innerHTML = `${description} - ${status}`;
+            new_item.innerHTML = `${description} `;
+            new_item.append(status_span);
+            
+
+
+
+
             // Append new item to the todo list
             document.getElementById("todo_list").appendChild(new_item);
             // Clear form inputs

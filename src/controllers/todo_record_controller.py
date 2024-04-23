@@ -2,14 +2,10 @@ import cherrypy
 
 from src.models.item import Item
 from src.services import todo_list_services
-from src.models.todolist import TodoList
 
 
 class TodoRecordsV1(object):
     exposed = True
-
-    def __init__(self):
-        self.todo_list = TodoList()
 
 
     @cherrypy.tools.json_out()
@@ -123,16 +119,17 @@ class TodoRecordsV1(object):
         :param record_id: Id of a specific todo record resource.
         :return: The status, if the operation is successful or not, along with the record that is deleted.
         """
-        res_msg = {"status": "FAIL", "data": ""}
+        res_msg = {"status": "FAIL", "data": []}
         try:
+            items_to_delete = []
             if description:
-                items_to_delete = [item for item in self.todo_list.items if item.description == description]
+                items_to_delete = [item for item in todo_list_services.todo_list.items if item.description == description]
                 for item_to_delete in items_to_delete:
-                    self.todo_list.items.remove(item_to_delete)
+                    todo_list_services.todo_list.items.remove(item_to_delete)
             elif status:
-                items_to_delete = [item for item in self.todo_list.items if item.status == status]
+                items_to_delete = [item for item in todo_list_services.todo_list.items if item.status == status]
                 for item_to_delete in items_to_delete:
-                    self.todo_list.items.remove(item_to_delete)
+                    todo_list_services.todo_list.items.remove(item_to_delete)
             else:
                 cherrypy.response.status = 400
                 return {"Error": "Neither description nor status provided for deletion"}
@@ -141,10 +138,9 @@ class TodoRecordsV1(object):
                 cherrypy.response.status = 404
                 return {"Error": "No matching items found for deletion"}
 
-            self.todo_list.save_items()
+            todo_list_services.todo_list.save_items()
             if items_to_delete:
                 res_msg['status'] = 'SUCCESS'
-                res_msg['data'] = 'DELETED'
 
             return res_msg
         except Exception as e:

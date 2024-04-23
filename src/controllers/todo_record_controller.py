@@ -34,8 +34,7 @@ class TodoRecordsV1(object):
             found_items = []
             # Search for the item in task list
             for item in todo_list_services.todo_list.items:
-                item_data: list[str] = item.split(",")
-                if item_data[0].lower() == description.lower():
+                if item.description.lower() == description.lower():
                     found_items.append(item)
             # If item is found in task list
             if found_items:

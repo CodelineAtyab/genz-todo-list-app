@@ -1,7 +1,8 @@
 from src.models.todolist import TodoList
 from src.models.item import Item
+import pickle
 
-
+__PICKLE_FILE_PATH = "./data/store_list.pkl"
 
 todo_list = TodoList()
 todo_list.if_header_exists()
@@ -15,12 +16,36 @@ for line in list_of_lines_in_file:
     description, status = line.split(",")
     todo_list.items.append(Item(description, status))
 
+"""
+    This function creates a pickle file from a list of todo items. 
+    It's just a proof of concept.
+"""
+def create_pickle_file(todo_items, pickle_file):
+    # Save todo_list to pickle file
+    with open(pickle_file, 'wb') as f:
+        pickle.dump(todo_list, f)
+"""
+    This function loads a pickle file and returns the todo_list object.
+"""
+def load_pickle_file(pickle_file):
+    try:
+        with open(pickle_file, 'rb') as f:
+            return pickle.load(f)
+    except FileNotFoundError:
+        return "File not found"
 
 if __name__ == "__main__":
-    print(todo_list.filter_items("pending"))
+
+    # proof of concept for pickle
+    create_pickle_file(todo_list.items, __PICKLE_FILE_PATH)
+    loaded_todo_list = load_pickle_file(__PICKLE_FILE_PATH)
+
+    for item in loaded_todo_list.items[1:]:
+        print("Description:", item.description)
+        print("Status:", item.status)
+
     todo_list.append_item(Item("Buy groceries", "pending"))
     todo_list.append_item(Item("Complete homework", "completed"))
     todo_list.append_item(Item("Complete homewoddddrk", "pending"))
-
-
+    print(todo_list.filter_items("pending"))
 

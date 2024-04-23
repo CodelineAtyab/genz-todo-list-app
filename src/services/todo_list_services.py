@@ -24,14 +24,28 @@ def create_pickle_file(todo_items, pickle_file):
     # Save todo_list to pickle file
     with open(pickle_file, 'wb') as f:
         pickle.dump(todo_list, f)
+"""
+    This function loads a pickle file and returns the todo_list object.
+"""
+def load_pickle_file(pickle_file):
+    try:
+        with open(pickle_file, 'rb') as f:
+            return pickle.load(f)
+    except FileNotFoundError:
+        return "File not found"
 
 if __name__ == "__main__":
 
     # proof of concept for pickle
     create_pickle_file(todo_list.items, __PICKLE_FILE_PATH)
-    
-    print(todo_list.filter_items("pending"))
+    loaded_todo_list = load_pickle_file(__PICKLE_FILE_PATH)
+
+    for item in loaded_todo_list.items[1:]:
+        print("Description:", item.description)
+        print("Status:", item.status)
+
     todo_list.append_item(Item("Buy groceries", "pending"))
     todo_list.append_item(Item("Complete homework", "completed"))
     todo_list.append_item(Item("Complete homewoddddrk", "pending"))
+    print(todo_list.filter_items("pending"))
 

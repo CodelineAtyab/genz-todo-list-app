@@ -1,7 +1,7 @@
 import cherrypy
 
+from src.models.item import Item
 from src.services import todo_list_services
-from src.models.todolist import TodoList
 
 
 class TodoRecordsV1(object):
@@ -23,24 +23,22 @@ class TodoRecordsV1(object):
         def create_list_of_dictionaries(data_values):
             list_of_dicts = []
             for item in data_values:
-                item_data = item.split(",")
-                new_dict = {"description": item_data[0], "status": item_data[1]}
+                new_dict = {"description": item.description, "status": item.status}
                 list_of_dicts.append(new_dict)
             return list_of_dicts
         
         # If task list is empty
         if len(todo_list_services.list_of_lines_in_file) < 2: 
-            res_msg = {"status": "SUCCESS", "data": "EMPTY LIST"}
+            res_msg = {"status": "SUCCESS", "data": []}
         # GET request all items
         elif description == None: 
-            res_msg = {"status": "SUCCESS", "data": create_list_of_dictionaries(todo_list_services.list_of_lines_in_file[1:])}
+            res_msg = {"status": "SUCCESS", "data": create_list_of_dictionaries(todo_list_services.todo_list.items[1:])}
         # GET request one item
         else:
             found_items = []
             # Search for the item in task list
-            for item in todo_list_services.list_of_lines_in_file:
-                item_data: list[str] = item.split(",")
-                if item_data[0].lower() == description.lower():
+            for item in todo_list_services.todo_list.items:
+                if item.description.lower() == description.lower():
                     found_items.append(item)
             # If item is found in task list
             if found_items:
@@ -58,7 +56,27 @@ class TodoRecordsV1(object):
         :return: The status, if the operation is successful or not, along with the record that is created.
         """
         res_msg = {"status": "FAIL", "data": ""}
+
+        # Extract data from JSON payload
+        input_data = cherrypy.request.json
+        description = input_data.get('description')
+        status = input_data.get('status', 'pending')  # Default to 'pending' if not provided
+
+        # Input validation
+        if not description:
+            raise cherrypy.HTTPError(400, "Description is required")
+
+        # Create a new todo item
+        new_item = Item(description, status)
+        todo_list_services.todo_list.append_item(new_item)
+
+        # Return the new item details and 201 Created status code
+        cherrypy.response.status = 201
+        res_msg["status"] = "success"
+        res_msg["data"] = {"description": new_item.description, "status": new_item.status}
         return res_msg
+
+    # Assuming the TodoList class has the method append_item that adds an item
 
     @cherrypy.tools.json_in()
     @cherrypy.tools.json_out()
@@ -72,7 +90,7 @@ class TodoRecordsV1(object):
         res_msg = {"status": "FAIL", "data": ""}
         request_data = cherrypy.request.json
         found_item: todo_list_services.Item = None
-        for item in todo_list_services.todo_list:
+        for item in todo_list_services.todo_list.items:
             if item.description.strip().lower() == todo_description.strip().lower():
                 found_item = item
 
@@ -82,13 +100,13 @@ class TodoRecordsV1(object):
             if 'description' in request_data:
                 item_to_update.description = request_data['description']
             if 'status' in request_data:
-                item_to_update.description = request_data['Status']
+                item_to_update.status = request_data['status']
 
         updated = todo_list_services.todo_list.replace_item(found_item, item_to_update)
 
         if updated:
             res_msg['status'] = 'SUCCESS'
-            res_msg['data'] = item.__dict__
+            res_msg['data'] = 'UPDATED'
         else:
             cherrypy.response.status = 404  # Not Found
             res_msg['data'] = 'Item not found.'

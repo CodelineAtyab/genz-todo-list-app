@@ -1,4 +1,3 @@
-
 class Item:
     def __init__(self, description, status):
         self.description = description
@@ -6,4 +5,3 @@ class Item:
 
     def to_csv(self):
         return f"{self.description}, {self.status}" + "\n"
-

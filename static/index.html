@@ -14,19 +14,27 @@
 </head>
 <body>
     <div class="container">
-        <h1 class="mb-4">Todo List</h1>
+        <h1 class="mb-4">My Plan for Today</h1>
         <!-- Todo List Display -->
         <div class="row">
             <div class="col">
-                <ul id="todo_list" class="list-group">
-                    <!-- Todo list items will be added dynamically here -->
-                </ul>
+                <table id="todo_table" class="table">
+                    <thead>
+                        <tr>
+                            <th>What's the plan ?</th>
+                            <th>Is it done ?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Todo list items will be added dynamically here -->
+                    </tbody>
+                </table>
             </div>
         </div>
         <!-- Todo List Form -->
         <div class="row mt-4">
             <div class="col">
-                <h2>Add Todo List Item</h2>
+                <h2>Remind me about / Note Down:</h2>
                 <form id="todo_form">
                     <div class="mb-3">
                         <label for="description" class="form-label">Description:</label>
@@ -54,56 +62,65 @@
             let description = document.getElementById("description").value;
             let status = document.getElementById("status").value;
             
-            // Create new todo list item
-            let new_item = document.createElement("li");
-            let status_span = document.createElement("span");
+            // Send a POST request to save the data
+            const myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
 
-            if (status.trim().toLowerCase() === "completed") {
-                status_span.className = "btn btn-primary";
-                status_span.innerHTML = "Completed";
-            } else {
-                status_span.className = "btn btn-warning";
-                status_span.innerHTML = "Pending";
-            }
+            const raw = JSON.stringify({
+                "description": description.trim().toLowerCase(),
+                "status": status.trim().toLowerCase()
+            });
 
-            new_item.className = "list-group-item";
-            new_item.innerHTML = `${description} `;
-            new_item.append(status_span);
-            
+            const requestOptions = {
+                method: "POST",
+                headers: myHeaders,
+                body: raw,
+                redirect: "follow"
+            };
 
+            fetch("http://localhost:8080/api/v1/todoRecords", requestOptions)
+            .then((response) => response.json())
+            .then((result) => {
+                // Create new todo list row
+                let todo_table = document.getElementById("todo_table");
+                let newRow = todo_table.insertRow();
+                let cell1 = newRow.insertCell(0);
+                let cell2 = newRow.insertCell(1);
+                
+                // Update the table
+                cell1.innerHTML = description;
 
+                status = status.trim().toUpperCase()
+                status_class = "btn btn-warning";
+                if (status === "COMPLETED") {
+                    status_class = "btn btn-success";
+                }
+                cell2.innerHTML = `<span class="${status_class}">${status}</span>`;
 
-
-            // Append new item to the todo list
-            document.getElementById("todo_list").appendChild(new_item);
-            // Clear form inputs
-            document.getElementById("description").value = "";
-            document.getElementById("status").value = "Pending";
+                // Clear form inputs
+                document.getElementById("description").value = "";
+                document.getElementById("status").value = "Pending";
+            })
+            .catch((error) => console.error(error));
         });
 
         // Fetch todo list items from GenZ API
         fetch("http://localhost:8080/api/v1/todoRecords")
         .then(response => response.json())
         .then(jsonResponse => {
-            let todo_list = document.getElementById("todo_list");
+            let todo_table = document.getElementById("todo_table");
             jsonResponse.data.forEach(item => {
-                let new_item = document.createElement("li");
-                let status_span = document.createElement("span");
+                let newRow = todo_table.insertRow();
+                let cell1 = newRow.insertCell(0);
+                let cell2 = newRow.insertCell(1);
+                cell1.innerHTML = item.description;
 
-                if (item.status.trim() === "completed") {
-                    status_span.className = "btn btn-primary";
-                    status_span.innerHTML = "Completed";
-                } else {
-                    status_span.className = "btn btn-warning";
-                    status_span.innerHTML = "Pending";
+                item.status = item.status.trim().toUpperCase()
+                status_class = "btn btn-warning";
+                if (item.status === "COMPLETED") {
+                    status_class = "btn btn-success";
                 }
-
-                // <span class="label label-success">Success</span>
-                new_item.className = "list-group-item";
-                new_item.innerHTML = `${item.description} `;
-                new_item.append(status_span);
-
-                todo_list.appendChild(new_item);
+                cell2.innerHTML = `<span class="${status_class}">${item.status}</span>`;
             });
         });
     </script>

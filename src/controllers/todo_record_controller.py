@@ -25,7 +25,7 @@ class TodoRecordsV1(object):
             return list_of_dicts
         
         # If task list is empty
-        if len(todo_list_services.list_of_lines_in_file) < 2: 
+        if len(todo_list_services.list_of_lines_in_file) < 1:
             res_msg = {"status": "SUCCESS", "data": []}
         # GET request all items
         elif description == None: 

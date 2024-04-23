@@ -1,0 +1,46 @@
+body {
+    background-color: #f4f4f4;
+}
+.container {
+    margin-top: 50px;
+}
+.input-field label {
+    color: #000;
+}
+.input-field input[type=text]:focus + label {
+    color: #007bff !important;
+}
+.input-field input[type=email]:focus + label {
+    color: #007bff !important;
+}
+.input-field input[type=text]:focus {
+    border-bottom: 1px solid #007bff !important;
+    box-shadow: 0 1px 0 0 #007bff !important;
+}
+.input-field input[type=email]:focus {
+    border-bottom: 1px solid #007bff !important;
+    box-shadow: 0 1px 0 0 #007bff !important;
+}
+.input-field .material-icons.prefix {
+    color: #007bff;
+}
+.btn {
+    background-color: #007bff;
+}
+.btn:hover {
+    background-color: #0056b3;
+}
+.contact-list {
+    margin-top: 30px;
+}
+.contact-item {
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 2px rgba(0,0,0,0.1);
+}
+.contact-item h5 {
+    margin-bottom: 5px;
+    color: #007bff;
+}

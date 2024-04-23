@@ -89,7 +89,6 @@ class TodoRecordsV1(object):
         res_msg = {"status": "FAIL", "data": ""}
         request_data = cherrypy.request.json
         found_item: todo_list_services.Item = None
-
         for item in todo_list_services.todo_list.items:
             if item.description.strip().lower() == todo_description.strip().lower():
                 found_item = item

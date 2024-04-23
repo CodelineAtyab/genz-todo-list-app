@@ -60,3 +60,12 @@ class TXTContactBook(ContactBook):
         elif format_type == 'TXT':
             self.save_contacts()  # Re-use the existing save functionality
             print("Contacts downloaded as TXT.")
+
+    def search_contacts(self, name=None, phone=None, email=None):
+        results = []
+        for contact in self.contacts:
+            if (name and contact.name == name) or \
+            (phone and contact.phone_number == phone) or \
+            (email and contact.email == email):
+                results.append(contact)
+        return results

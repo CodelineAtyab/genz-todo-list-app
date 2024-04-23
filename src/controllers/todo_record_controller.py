@@ -69,7 +69,7 @@ class TodoRecordsV1(object):
         res_msg = {"status": "FAIL", "data": ""}
         request_data = cherrypy.request.json
         found_item: todo_list_services.Item = None
-        for item in todo_list_services.todo_list:
+        for item in todo_list_services.todo_list.items:
             if item.description.strip().lower() == todo_description.strip().lower():
                 found_item = item
 
@@ -79,13 +79,13 @@ class TodoRecordsV1(object):
             if 'description' in request_data:
                 item_to_update.description = request_data['description']
             if 'status' in request_data:
-                item_to_update.description = request_data['Status']
+                item_to_update.status = request_data['status']
 
         updated = todo_list_services.todo_list.replace_item(found_item, item_to_update)
 
         if updated:
             res_msg['status'] = 'SUCCESS'
-            res_msg['data'] = item.__dict__
+            res_msg['data'] = 'UPDATED'
         else:
             cherrypy.response.status = 404  # Not Found
             res_msg['data'] = 'Item not found.'

@@ -1,7 +1,7 @@
 import os
-import json
 
-from src.models.item import Item
+
+from Item import Item
 
 
 class TodoList:
@@ -21,36 +21,22 @@ class TodoList:
         if not os.path.exists(self.BASE_FILE_PATH):  # checks if file exists
             self.write_heading()
 
-    def __validate_item(self, item):
+    def validate_item(self, item):
         """
         :param item: based on description, a check occurs to see if task already exists, if it does,
                             the task does not get added and "Task Already Exists" is returned
         """
 
-        return not any(item.description.strip().lower() == existing_item.description.strip().lower()
-                       for existing_item in self.items)
-
-    def replace_item(self, old_item, new_item):
-        updated_item = False
-        if self.__validate_item(new_item):
-            self.items.remove(old_item)
-            self.items.append(new_item)
-            self.save_items()
-            updated_item = True
-
-        return updated_item
+        return any(item.description.strip().lower() == existing_item.description.strip().lower() for existing_item in
+                   self.items)
 
     def append_item(self, item):
-        """
-
-        """
-        appended_successfully = False
-        if self.__validate_item(item):
+        if self.validate_item(item):
+            print("Task Already in List")
+        else:
             self.items.append(item)
             self.save_items()
-            appended_successfully = True
-
-        return appended_successfully
+            print("List Saved")
 
     def save_items(self):
         """
@@ -76,20 +62,5 @@ class TodoList:
                 elif state == "r":
                     return [x.strip() for x in list_file.readlines()]
         except Exception as ex:
-
             print("Error", ex)
 
-    def filter_items(self, status=""):
-        """
-        A function to return items based on their status (pending/completed)
-        :param status: pending, completed, or none
-        :return: a filtered list of items in a json format
-        """
-        items_list = self.open_write_file(state="r")
-        if status == "completed":
-            filtered_list = [item.split(',')[0].strip() for item in items_list if "completed" in item]
-        elif status == "pending":
-            filtered_list = [item.split(',')[0].strip() for item in items_list if "pending" in item]
-        else:
-            filtered_list = [item.strip() for item in items_list]
-        return json.dumps(filtered_list)

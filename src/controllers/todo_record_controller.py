@@ -110,12 +110,40 @@ class TodoRecordsV1(object):
             res_msg['data'] = 'Item not found.'
         return res_msg
 
+
+    @cherrypy.expose
     @cherrypy.tools.json_out()
-    def DELETE(self, record_id=None):
+    @cherrypy.tools.json_in()
+    def DELETE(self, description=None, status=None):
         """
         Handles the DELETE request and returns a JSON response.
         :param record_id: Id of a specific todo record resource.
         :return: The status, if the operation is successful or not, along with the record that is deleted.
         """
-        res_msg = {"status": "FAIL", "data": ""}
-        return res_msg
+        res_msg = {"status": "FAIL", "data": []}
+        try:
+            items_to_delete = []
+            if description:
+                items_to_delete = [item for item in todo_list_services.todo_list.items if item.description == description]
+                for item_to_delete in items_to_delete:
+                    todo_list_services.todo_list.items.remove(item_to_delete)
+            elif status:
+                items_to_delete = [item for item in todo_list_services.todo_list.items if item.status == status]
+                for item_to_delete in items_to_delete:
+                    todo_list_services.todo_list.items.remove(item_to_delete)
+            else:
+                cherrypy.response.status = 400
+                return {"Error": "Neither description nor status provided for deletion"}
+
+            if not items_to_delete:
+                cherrypy.response.status = 404
+                return {"Error": "No matching items found for deletion"}
+
+            todo_list_services.todo_list.save_items()
+            if items_to_delete:
+                res_msg['status'] = 'SUCCESS'
+
+            return res_msg
+        except Exception as e:
+            cherrypy.response.status = 500
+            return {"error": str(e)}

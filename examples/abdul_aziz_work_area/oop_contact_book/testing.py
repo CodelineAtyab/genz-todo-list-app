@@ -1,12 +1,20 @@
-import unittest
-import requests
+import cherrypy
+from cherrypy.test import helper
 
-class TestGetContactAPI(unittest.TestCase):
-    def test_get_contact(self):
-        url = 'http://127.0.0.1:8080/api/contacts?name=John%20Doe'
-        response = requests.get(url)
-        self.assertEqual(response.status_code, 200)
-        self.assertIn('John Doe', response.json()['contacts'])
+from examples.abdul_aziz_work_area.oop_contact_book.mainapi import ContactBookAPI
+
+
+class TestApp(helper.CPWebCase):
+    def setup_server(self):
+        cherrypy.tree.mount(ContactBookAPI(), '/api/contacts', {'/': {
+            'request.dispatch': cherrypy.dispatch.MethodDispatcher()
+        }})
+
+    def test_post_contact(self):
+        self.getPage("/api/contacts", method='POST', body='{"name": "John Doe", "phone": "123-456-7890", "email": "john.doe@example.com", "address": "123 Elm St"}', headers=[('Content-Type', 'application/json')])
+        self.assertStatus('200 OK')
+        self.assertInBody('Contact with phone number 123-456-7890 created')
 
 if __name__ == '__main__':
+    import unittest
     unittest.main()

@@ -1,5 +1,6 @@
 import cherrypy
 import os
+import sys
 
 
 from src.controllers.todo_record_controller import TodoRecordsV1
@@ -15,7 +16,8 @@ class Root(object):
         pass
 
 
-cherrypy.config.update({'server.socket_host': '0.0.0.0', 'server.socket_port': 8080})
+SERVER_PORT = sys.argv[1] if sys.argv[1] else 8080
+cherrypy.config.update({'server.socket_host': '0.0.0.0', 'server.socket_port': int(SERVER_PORT)})
 
 # Mount the ContactsAPI application
 cherrypy.tree.mount(TodoRecordsV1(), '/api/v1/todoRecords', {

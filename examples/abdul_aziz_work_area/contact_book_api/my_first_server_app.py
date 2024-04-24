@@ -22,14 +22,6 @@ cherrypy.tree.mount(ContactRecordsV1(), '/api/v1/contacts', {
     }
 })
 
-cherrypy.tree.mount(Root(), '/', {
-    '/': {
-            'tools.staticdir.root': os.path.abspath(os.path.dirname(__file__)),
-            'tools.staticdir.on': True,
-            'tools.staticdir.dir': 'static',
-            'tools.staticdir.index': 'index.html',
-    }
-})
 
 # Start the CherryPy server
 cherrypy.engine.start()

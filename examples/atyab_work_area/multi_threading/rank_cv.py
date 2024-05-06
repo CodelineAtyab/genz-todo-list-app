@@ -43,4 +43,3 @@ if __name__ == "__main__":
     child_thread_1.join()
     child_thread_2.join()
     child_thread_3.join()
-

@@ -1,5 +1,3 @@
-import time
-import threading
 from queue import Queue  # Thread-safe
 
 import requests

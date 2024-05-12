@@ -28,10 +28,10 @@ def monitor_files():
     observer.start()
     try:
         while True:
-            time.sleep(2)
+            time.sleep(2)  # to stop when a signal is received
     except KeyboardInterrupt:
         observer.stop()
-    observer.join()
+    # observer.join()
 
 
 # Process thread function
@@ -44,7 +44,7 @@ def process_files(content=None):
             save_queue.put((file, result))
 
 
-# Function to process file content (example)
+# Function to process file content
 def process_file_content(file):
     # Print file path for debugging
     print(f"Processing file: {file}")
@@ -67,6 +67,7 @@ def save_results():
             file, result = save_queue.get()
             with open("processed_results.txt", "a") as f:
                 f.write(f"File Name and Content: {result}\n")
+        time.sleep(1)
 
 
 if __name__ == "__main__":
@@ -83,7 +84,7 @@ if __name__ == "__main__":
     save_thread.start()
 
     # Join threads
-    monitor_thread.join()
-    process_thread.join()
-    save_thread.join()
+    monitor_thread.join()  # not supposed to exit because of the while loop above
+    # process_thread.join()
+    # save_thread.join()
 

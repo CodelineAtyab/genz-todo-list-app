@@ -54,4 +54,4 @@ if __name__ == "__main__":
     file_processor = FileProcessor(monitored_directory)
     
     while True:
-        time.sleep(10)
+        time.sleep(1)

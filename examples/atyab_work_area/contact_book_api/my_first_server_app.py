@@ -13,7 +13,7 @@ class Root(object):
 cherrypy.config.update({'server.socket_host': '0.0.0.0', 'server.socket_port': 8080})
 
 # Mount the ContactsAPI application
-cherrypy.tree.mount(ContactRecordsV1(), '/api/v1/contacts', {
+cherrypy.tree.mount(ContactRecordsV1(), '/api/v1/convert-measurements', {
     '/': {
         'request.dispatch': cherrypy.dispatch.MethodDispatcher(),  # Use method-based dispatching
         'tools.sessions.on': False,

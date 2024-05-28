@@ -3,12 +3,13 @@ import glob
 import traceback
 import time
 import json
+import hashlib
+
 from queue import Empty
 from multiprocessing import Process, Queue, cpu_count
 from pyresparser import ResumeParser
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
-import hashlib
 
 
 class CVHandler(FileSystemEventHandler):
@@ -89,7 +90,7 @@ if __name__ == "__main__":
         while True:
             time.sleep(1)
     except KeyboardInterrupt:
-        print("Stopping processes...")
+        print("Ending the process")
 
     observer.stop()
     observer.join()
@@ -101,4 +102,4 @@ if __name__ == "__main__":
     res_consumer_process.terminate()
     res_consumer_process.join()
 
-    print("Exiting ...")
+    print("Done")

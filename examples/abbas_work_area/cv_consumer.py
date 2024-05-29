@@ -42,18 +42,11 @@ class CVConsumer:
         while True:
             try:
                 res_data = res_queue.get(timeout=3)
-                # Retrieve the precomputed hash from the result data
-                sha256_hash = res_data.get('hash')
-                if sha256_hash in self.hashes:
-                    print(f"Process {process_id}: Duplicate result found. Skipping.")
-                    continue
-
                 res_data_str = json.dumps(res_data)
                 filename = res_data.get('filename', 'unknown')
                 # Write result and hash to file
                 result = f"Result: {res_data_str}, Filename: {filename}\n"
                 self.open_read_file("a", result)
-
 
             except Empty:
                 print(f"Process {process_id}: Result Queue is empty.")
@@ -88,7 +81,8 @@ class CVConsumer:
         except Exception:
             print(f"Process {process_id}: Exception {traceback.format_exc()}")
 
-    def open_read_file(self, state, result="", file_path="./Documents/result.txt"):
+    @staticmethod
+    def open_read_file(state, result="", file_path="./Documents/result.txt"):
         with open(file_path, state) as res_file:
             if state == 'a':
                 res_file.write(result)
@@ -96,4 +90,3 @@ class CVConsumer:
                 return res_file.readlines()
             elif state == 'rb':
                 return res_file.read()
-        return None

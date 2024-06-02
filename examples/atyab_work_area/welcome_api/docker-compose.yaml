@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  ui:
+    container_name: "genz_welcome_ui"
+    image: nginx
+    ports:
+      - 8000:80
+    volumes:
+      - C:\Users\SyedAtyabHussain\Documents\omantel_work_area\genz-todo-list-app\examples\atyab_work_area\welcome_api\ui:/usr/share/nginx/html:rw
+    restart: "always"
+    depends_on:
+      - api
+  api:
+    container_name: "genz_welcome_api"
+    build: .
+    ports:
+      - 8080:8080
+    restart: "always"
